@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  admin:
+    build: ./admin
+    restart: always
+    networks:
+      - 3icp
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo_icp
+    environment:
+      - FLASK_ENV=development
+      - MONGO_URI=mongodb://mongo_icp:27017/3icp
+
+  backend:
+    build: ./web
+    restart: always
+    networks:
+      - 3icp
+    ports:
+      - "4000:4000"
+
+  fontend:
+    build: ./front
+    restart: always
+    networks:
+      - 3icp
+    ports:
+      - "8082:80"
+
+  mongo_icp:
+    image: mongo
+    restart: always
+    networks:
+      - 3icp
+    ports:
+      - 27018:27017
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  3icp:
+    driver: bridge
+
+volumes:
+  mongo-data:
