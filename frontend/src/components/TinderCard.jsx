@@ -4,7 +4,7 @@ import { FaRedo, FaTimes, FaStar, FaHeart, FaBolt, FaArrowRight } from "react-ic
 
 const TinderCard = () => {
   return (
-    <div className="w-full md:w-1/2 lg:w-1/3 bg-black rounded-3xl overflow-hidden shadow-lg relative h">
+    <div className="w-full md:w-1/2 lg:w-1/3 bg-black rounded-3xl overflow-hidden shadow-lg relative ">
       {/* Image de profil */}
       <div className="relative">
         <img
@@ -19,10 +19,10 @@ const TinderCard = () => {
       </div>
 
       {/* Informations */}
-      <div className="p-4 bg-gradient-to-t from-black to-transparent absolute bottom-0 w-full">
-        <h2 className="text-white text-xl font-bold">Vanessa <span className="font-normal">20</span></h2>
+      <div className="p-4 w-full">
+        <h2 className="text-white text-xl font-bold">Titre <span className="font-normal">20</span></h2>
         <div className="flex items-center text-gray-400 text-sm mt-2">
-          <span className="mr-2">⚡ Passions</span>
+          lorem
         </div>
 
         {/* Passions */}
@@ -44,7 +44,11 @@ const TinderCard = () => {
           { icon: FaHeart, color: "text-green-500" },
           { icon: FaBolt, color: "text-purple-500" },
         ].map((btn, index) => (
-          <button key={index} className={`bg-gray-800 p-3 rounded-full ${btn.color}`}>
+          <button key={index} className={`bg-gray-800 p-3 rounded-full ${btn.color}`} onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            
+          }}>
             <btn.icon className="text-xl" />
           </button>
         ))}

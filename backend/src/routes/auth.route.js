@@ -1,17 +1,17 @@
 const express = require("express");
 const validateRequest = require("../middlewares/validate-request");
 const Joi = require("joi");
-const Player = require("../models/Player");
+const User = require("../models/User");
 const moment = require("moment");
 const { v4: uuidv4 } = require("uuid");
 
 const router = express.Router();
 
-router.post("/", async (req, res, next) => {
+router.post("/singup", async (req, res, next) => {
   const { username, itsMe, anonymous } = req.body;
 
   if (username) {
-    let player = await Player.findOne({ username });
+    let player = await User.findOne({ username });
 
     if (player) {
       console.log(player);
@@ -23,7 +23,7 @@ router.post("/", async (req, res, next) => {
         });
       }
     } else {
-      player = new Player({ username, last_connexion: new Date() });
+      player = new User({ username, last_connexion: new Date() });
       await player.save();
     }
 
@@ -53,13 +53,13 @@ router.post("/signin", async (req, res, next) => {
 
     if (!username) throw "username is required";
 
-    player = await Player.findOne({ username });
+    player = await User.findOne({ username });
 
     let is_exist = true;
 
     if (!player) {
       is_exist = false;
-      player = new Player({ username });
+      player = new User({ username });
     }
 
     player.last_connexion = new Date();
@@ -71,36 +71,5 @@ router.post("/signin", async (req, res, next) => {
   }
 });
 
-router.get("/anonyme", async (req, res) => {
-  try {
-    const uid = uuidv4().split("-");
-    const player = new Player({
-      username: uid[uid.length - 1],
-      last_connexion: new Date(),
-    });
-    await player.save();
-    return res.json(player);
-  } catch (error) {
-    res.status(400).json({ message: error?.message || error });
-  }
-});
-
-router.get("/visitor", async (req, res) => {
-  const player = new Player({ username: uuidv4(), last_connexion: new Date() });
-  await player.save();
-
-  const infosuser = {
-    _id: player._id,
-    name: player.username,
-    last_connexion: moment(player.last_connexion).format("DD/MM/YYYY"),
-  };
-  req.session.player = infosuser;
-
-  return res.redirect(`/home/${player?._id}`);
-});
-
-router.get("/", (req, res) => {
-  res.render("login");
-});
 
 module.exports = router;

@@ -58,8 +58,11 @@ function Dashboard() {
         {/*  Site header */}
         {/* <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
 
-        <main className="h-full relative pt-12 md:pt-0">
-          <div className="flex items-center justify-center min-h-screen">
+        <main className="h-full relative  mx-4 md:mx-0 py-5">
+          <div
+            className="flex justify-center"
+            style={{ height: window.innerHeight - 100 }}
+          >
             <TinderCard />
           </div>
         </main>

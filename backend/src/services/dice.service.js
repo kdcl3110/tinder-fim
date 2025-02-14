@@ -1,6 +1,6 @@
-const Session = require("../models/Session");
+const Session = require("../models/Swipe");
 const Party = require("../models/Party");
-const Player = require("../models/Player");
+const Player = require("../models/User");
 
 let timeoutId = {};
 
