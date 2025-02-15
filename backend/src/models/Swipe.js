@@ -3,8 +3,8 @@ const uniqueValidator = require("mongoose-unique-validator");
 
 const schema = new mongoose.Schema(
   {
-    user: { type: String, default: null },
-    film: { type: Date, default: null },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    movie: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie' },
     choice: {
       type: String,
       enum: ["like", "unlike"],

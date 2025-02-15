@@ -7,9 +7,7 @@ import {
   replaceIsLoggedIn,
   replaceSocket,
 } from "./slices/auth";
-import { replaceEncours, replaceWainting } from "./slices/game";
 import { baseURL } from "./utils/baseUrl";
-import { getConfigs } from "./slices/config";
 
 const Init = ({ children }) => {
   const { currentUser, isLoggedIn, socket, language } = useSelector(
@@ -28,28 +26,28 @@ const Init = ({ children }) => {
   });
 
   useEffect(() => {
-    if (isLoggedIn) {
-      try {
-        socket1.connect();
-        dispatch(replaceSocket(socket1));
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    // if (isLoggedIn) {
+    //   try {
+    //     socket1.connect();
+    //     dispatch(replaceSocket(socket1));
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
 
-    if (localStorage.getItem("user")) {
-      if (!currentUser || JSON.stringify(currentUser) == "{}") {
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        dispatch(replaceCurrentUser(user));
-        dispatch(replaceIsLoggedIn(true));
-      }
-    }
+    // if (localStorage.getItem("user")) {
+    //   if (!currentUser || JSON.stringify(currentUser) == "{}") {
+    //     const user = JSON.parse(localStorage.getItem("user") || "{}");
+    //     dispatch(replaceCurrentUser(user));
+    //     dispatch(replaceIsLoggedIn(true));
+    //   }
+    // }
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (currentUser?._id) {
-      dispatch(getConfigs(currentUser?._id));
-    }
+    // if (currentUser?._id) {
+    //   dispatch(getConfigs(currentUser?._id));
+    // }
   }, [currentUser]);
 
   useEffect(() => {

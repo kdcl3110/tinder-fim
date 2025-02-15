@@ -1,37 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
+
 import { Provider } from "react-redux";
-import App from "./App";
 import store from "./store";
-import { IntlProvider } from "react-intl";
+import "./index.scss";
+import App from "./App.jsx";
+import Init from "./Init.jsx";
+import Toasts from "./components/Toasts.jsx";
 
-import French from "./lang/fr.json";
-import English from "./lang/en.json";
-import Init from "./Init";
-import Toasts from "./components/Toasts";
-
-const locale = navigator.language;
-
-let lang;
-if (locale === "en") {
-  lang = English;
-} else if (locale === "fr") {
-  lang = French;
-}
-
-ReactDOM.render(
-  <React.StrictMode>
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
     <Router>
       <Provider store={store}>
+        <Toasts />
         <Init>
-          <IntlProvider locale={locale} messages={French}>
-            <Toasts />
-            <App />
-          </IntlProvider>
+          <App />
         </Init>
       </Provider>
     </Router>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </StrictMode>
 );

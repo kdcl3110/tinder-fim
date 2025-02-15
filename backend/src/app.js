@@ -7,9 +7,9 @@ const errorHandler = require("./middlewares/error-handler");
 const path = require("path");
 
 const authRoute = require("./routes/auth.route");
-const pageRoute = require("./routes/page.route");
 const loadRoute = require("./routes/loaddatas.route");
-const Session = require("./models/Swipe");
+const movieRoute = require("./routes/movie.route");
+
 
 const app = express();
 app.use(express.static(path.join(__dirname, "../public")));
@@ -64,10 +64,10 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.render("login");
 });
-app.use("/", pageRoute);
+
 app.use("/auth", authRoute);
-app.use("/movies", authRoute);
 app.use("/load-datas", loadRoute);
+app.use("/movies", movieRoute);
 
 app.use(errorHandler);
 module.exports = app;

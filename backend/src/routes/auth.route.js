@@ -7,69 +7,44 @@ const { v4: uuidv4 } = require("uuid");
 
 const router = express.Router();
 
-router.post("/singup", async (req, res, next) => {
-  const { username, itsMe, anonymous } = req.body;
+router.post("/complete", async (req, res, next) => {
+  const { categories } = req.body;
 
-  if (username) {
-    let player = await User.findOne({ username });
+  try {
+    if (username) {
+      let user = await User.findOne({ username });
 
-    if (player) {
-      console.log(player);
-      if (!itsMe) {
-        return res.render("login", {
-          _id: player._id,
-          name: player.username,
-          last_connexion: moment(player.last_connexion).format("DD/MM/YYYY"),
-        });
+      if (!user) {
+        user = new User({ username });
+        await user.save();
       }
-    } else {
-      player = new User({ username, last_connexion: new Date() });
-      await player.save();
+      user.categories = categories;
+      await user.save();
+      return res.json({ data: user });
     }
-
-    const infosuser = {
-      _id: player._id,
-      name: player.username,
-      last_connexion: moment(player.last_connexion).format("DD/MM/YYYY"),
-    };
-    req.session.player = infosuser;
-
-    player.last_connexion = new Date();
-    await player.save();
-    return res.redirect(`/home/${player?._id}`);
+  } catch (error) {
+    return res.status(400).json({ message: error?.message || error });
   }
-
-  return res.render("login", {
-    message:
-      "Veuillez changer de nom d'utilisateur car celui ci est déjà utilisé",
-    error: true,
-  });
 });
 
 router.post("/signin", async (req, res, next) => {
   try {
     const { username } = req.body;
-    let player = null;
+    let user = null;
 
     if (!username) throw "username is required";
 
-    player = await User.findOne({ username });
+    user = await User.findOne({ username });
 
-    let is_exist = true;
-
-    if (!player) {
-      is_exist = false;
-      player = new User({ username });
+    if (!user) {
+      user = new User({ username });
     }
+    await user.save();
 
-    player.last_connexion = new Date();
-    await player.save();
-
-    return res.json({ data: player, is_exist });
+    return res.json({ data: user });
   } catch (error) {
-    res.status(400).json({ message: error?.message || error });
+    return res.status(400).json({ message: error?.message || error });
   }
 });
-
 
 module.exports = router;

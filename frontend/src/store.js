@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/auth";
-import gameReducer from "./slices/game";
+import movieReducer from "./slices/movie";
 import configReducer from "./slices/config";
 import messageReducer from "./slices/message";
 const reducer = {
   auth: authReducer,
-  game: gameReducer,
+  movie: movieReducer,
   config: configReducer,
   message: messageReducer,
 };
