@@ -139,7 +139,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className="flex justify-between">
           <div className="flex items-center justify-between w-full bg-primary-500 h-[80px] px-3">
             <NavLink end to="/" className="block flex">
-              <div className="flex rounded-full items-center text-white space-x-2 hover:bg-red-500 p-1">
+              <div className="flex rounded-full items-center text-white space-x-2 hover:bg-primary-900 p-1">
                 <div className="h-10 w-10 bg-black rounded-full"></div>
                 <div>Christian</div>
               </div>

@@ -17,6 +17,7 @@ import ModalAlert from "./modals/ModalAlert";
 import moment from "moment/moment";
 import Loading from "../components/Loading";
 import { showError } from "../components/Toasts";
+import { motion, useMotionValue, useTransform } from "motion/react";
 
 function Signin() {
   const validationSchema = Yup.object().shape({
@@ -94,13 +95,13 @@ function Signin() {
 
   const onErrors = (errors) => console.error(errors);
 
-  if (isLoggedIn) {
-    return <Navigate to="/" />;
-  }
+  // if (isLoggedIn) {
+  //   return <Navigate to="/" />;
+  // }
 
   return (
-    <main className="bg-white">
-      <Loading load={load} />
+    <main className="bg-black h-screen relative">
+      {/* <Loading load={load} /> */}
       <ModalAlert
         open={showIsexist}
         setOpen={setShowIsExist}
@@ -108,88 +109,47 @@ function Signin() {
         action={() => itsMe()}
       />
 
-      <div className="relative md:flex">
-        {/* Image */}
-        <div className="hidden md:block md:w-1/2" aria-hidden="true">
-          <img
-            className="object-cover object-center w-full h-full"
-            src={AuthImage}
-            width="760"
-            height="1024"
-            alt="Authentication"
-          />
-        </div>
+      <div
+        className={`absolute inset-0 m-0 h-full w-full overflow-hidden rounded-lg bg-transparent bg-cover bg-center`}
+        style={{ backgroundImage: `url("/images/background.jpg")` }}
+      >
+        <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/90 via-black/50" />
+      </div>
 
-        {/* Content */}
-        <div className="md:w-1/2">
-          <div
-            className="h-full flex flex-col after:flex-1"
-            style={{ minHeight: window.innerHeight }}
-          >
-            {/* Header */}
-            <div className="flex-1">
-              <div className="flex items-center justify-between h-16  px-4 sm:px-6 lg:px-8 ">
-                {/* Logo */}
-                <img className="h-12 rounded-full" src={Logo} />
-              </div>
+      <div className="relative grid min-h-screen overflow-y-auto place-items-center">
+        <div className="h-[35rem] w-full sm:w-[500px] bg-[#14141c] rounded-lg pt-10 px-5 text-white">
+          <div className="flex flex-col items-center w-full space-y-5 justify-center">
+            <img src={Logo} alt="logo" className="h-12" />
+            <p className="text-3xl font-bold">C'est parti</p>
+            <div className="text-center sm:text-base text-sm">
+              Glisse à gauche pour passer, à droite pour ajouter à ta liste 🎥.
+              Trouve le film parfait à regarder avec tes amis en quelques swipes
+              ! 🚀✨
             </div>
+          </div>
+          <div class="flex flex-col-reverse mt-5">
+            <input
+              placeholder="Nom d'utilisateur"
+              class="peer bg-gray-800 outline-none ring-1 px-4 py-1 h-12 border-0 rounded-lg ring-primary-200 duration-500 focus:ring-2 focus:border-primary-500 relative placeholder:duration-500 placeholder:absolute focus:placeholder:pt-10 text-xs shadow-xl shadow-base-400/10 focus:shadow-none focus:rounded-md focus:ring-primary-500 placeholder:text-base-500"
+            />
 
-            <div className="max-w-xl w-full px-16 mx-auto block text-base font-normal">
-              <div className="flex flex-col items-center">
-                <img className="h-48" src={Logo} alt="" />
-                <h1 className="text-3xl text-slate-800 font-bold mb-6">
-                  Connexion
-                </h1>
-              </div>
-              {/* Form */}
-              <form onSubmit={handleSubmit(onFormSubmit, onErrors)}>
-                <div className="space-y-1">
-                  <div>
-                    <TextInput
-                      className={`form-input w-full focus:border-primary-500 box-border focus:font-semibold
-                        font-semibold py-2 px-5 mb-2 border-1 ${
-                          errors.username
-                            ? "border-l-4 border-r-1 border-y-1 border-red-500"
-                            : "focus:border-l-4 focus:border-indigo-500"
-                        }`}
-                      name={"username"}
-                      placeholder={"Nom d'utilisateur"}
-                      onChange={(e) => {
-                        setValue("username", e);
-                        setUsername(e);
-                      }}
-                      register={{ ...register("username") }}
-                      value={username}
-                    />
-                    <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                      {errors.pseudo?.message}
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-6">
-                  <button
-                    type="submit"
-                    className="btn bg-black w-full hover:bg-primary-500 text-white"
-                    to="/"
-                  >
-                    Se connecter
-                  </button>
-                </div>
-              </form>
-              {/* Footer */}
-              <div className="pt-5 mt-6 border-t border-slate-200">
-                <div className="text-sm">
-                  Cotinuer en tant que:{" "}
-                  <button
-                    href="#"
-                    className="font-medium text-primary-500 hover:text-primary-600"
-                    onClick={() => start_visitor()}
-                  >
-                    visiter
-                  </button>
-                </div>
-              </div>
-            </div>
+            <span class="duration-500 opacity-0 mb-2 peer-focus:opacity-100 text-base-500 text-xs -translate-y-12 peer-focus:translate-y-0">
+              Nom d'utilisateur
+            </span>
+          </div>
+
+          <div className="flex justify-center mt-5">
+            <motion.button
+              className={`bg-gray-800 p-3 text-primary-500 rounded-xl w-3/4`}
+              whileHover={{ scale: 1.1 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleSwipe("right");
+              }}
+            >
+              Se connecter
+            </motion.button>
           </div>
         </div>
       </div>

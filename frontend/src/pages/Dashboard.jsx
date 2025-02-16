@@ -57,11 +57,11 @@ function Dashboard() {
 
         <main className="h-full relative">
           <div
-            className="grid max-h-screen bg-red-500 overflow-y-auto place-items-center"
+            className="grid min-h-screen overflow-y-auto place-items-center"
             // style={{ height: window.innerHeight - 100 }}
           >
             {movies.map((e, i) => (
-              <TinderCard key={e?._id} item={e} />
+              <TinderCard key={e?._id} item={e} movies={movies} />
             ))}
           </div>
         </main>
