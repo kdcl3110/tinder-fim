@@ -2,12 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaTimes, FaHeart } from "react-icons/fa";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import format_date from "../utils/format_date";
-import { useDispatch } from "react-redux";
-import { replaceMovie } from "../slices/movie";
+import { useDispatch, useSelector } from "react-redux";
+import { replaceMovie, swipe } from "../slices/movie";
+import { showError } from "./Toasts";
 
 const TinderCard = ({ item, movies = [] }) => {
   const dispatch = useDispatch();
 
+  const { currentUser } = useSelector((state) => state.auth);
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
@@ -16,15 +18,52 @@ const TinderCard = ({ item, movies = [] }) => {
 
   const handleSwipe = (direction) => {
     setExitX(direction === "left" ? -500 : 500); // Définit la direction du mouvement
+    const data = {
+      user: currentUser?._id,
+      movie: item?._id,
+      choice: "",
+    };
+    if (direction === "left") {
+      data.choice = "unlike";
+    } else {
+      data.choice = "like";
+    }
+
     setTimeout(() => {
-      dispatch(replaceMovie(movies.filter((e) => e?._id !== item?._id)));
-    }, 300); // Supprime l'élément après l'animation
+      dispatch(swipe(data))
+        .unwrap()
+        .then((res) => {
+          dispatch(replaceMovie(movies.filter((e) => e?._id != item?._id)));
+        })
+        .catch((err) => {
+          showError("Un problème est survenu");
+        });
+        
+      // dispatch(replaceMovie(movies.filter((e) => e?._id !== item?._id)));
+    }, 300);
   };
 
   const handleDragEnd = () => {
     if (Math.abs(x.get()) > 100) {
-      // const newTab = movies.filter((e) => e?._id != item?._id);
-      dispatch(replaceMovie(movies.filter((e) => e?._id != item?._id)));
+      const data = {
+        user: currentUser?._id,
+        movie: item?._id,
+        choice: "",
+      };
+      if (x.get() < 0) {
+        data.choice = "unlike";
+      } else {
+        data.choice = "like";
+      }
+
+      dispatch(swipe(data))
+        .unwrap()
+        .then((res) => {
+          dispatch(replaceMovie(movies.filter((e) => e?._id != item?._id)));
+        })
+        .catch((err) => {
+          showError("Un problème est survenu");
+        });
     }
   };
 
@@ -38,12 +77,10 @@ const TinderCard = ({ item, movies = [] }) => {
         // opacity,
         rotate,
       }}
-
       initial={{ x: 0 }}
       animate={{ x: exitX }}
       exit={{ x: exitX, opacity: 0 }} // Disparition en fondu
       transition={{ duration: 0.3, ease: "easeInOut" }} // Durée et fluidité de l'animation
-
       drag="x"
       dragConstraints={{
         left: 0,

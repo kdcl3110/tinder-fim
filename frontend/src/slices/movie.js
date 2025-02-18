@@ -8,7 +8,32 @@ export const getMovies = createAsyncThunk(
     try {
       const response = await movieService.getMovies(data);
       thunkAPI.dispatch(replaceMovie(response));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
+export const swipe = createAsyncThunk(
+  "movie/swipe",
+  async (data, thunkAPI) => {
+    try {
+      const response = await movieService.swipe(data);
+      // thunkAPI.dispatch(replaceMovie(response));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const getLike = createAsyncThunk(
+  "movie/getLike",
+  async (data, thunkAPI) => {
+    try {
+      const response = await movieService.getLike(data);
+      thunkAPI.dispatch(replaceLike(response));
       return response;
     } catch (error) {
       throw error;
@@ -26,9 +51,15 @@ const gameSlice = createSlice({
         movies: action.payload,
       };
     },
+    replaceLike(state, action) {
+      return {
+        ...state,
+        likes: action.payload,
+      };
+    },
   },
 });
 const { reducer, actions } = gameSlice;
 
-export const { replaceMovie } = actions;
+export const { replaceMovie, replaceLike } = actions;
 export default reducer;

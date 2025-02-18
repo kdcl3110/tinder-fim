@@ -16,7 +16,7 @@ import TextInput from "../components/TextInput";
 import ModalAlert from "./modals/ModalAlert";
 import moment from "moment/moment";
 import Loading from "../components/Loading";
-import { showError } from "../components/Toasts";
+import { showError, showSucces } from "../components/Toasts";
 import { motion, useMotionValue, useTransform } from "motion/react";
 
 function Signin() {
@@ -58,33 +58,7 @@ function Signin() {
       .unwrap()
       .then((data) => {
         setLoad(false);
-        console.log(data.is_exist);
-        if (data.is_exist) {
-          setMe(data.data);
-          const msg = `${data?.data?.username} c'est connecté le ${moment(
-            data?.data
-          ).format("DD/MM/YYYY")}. Est ce bien vous ?`;
-          setShowIsExist(true);
-          setMessage(msg);
-        } else {
-          dispatch(replaceCurrentUser(data.data));
-          dispatch(replaceIsLoggedIn(true));
-          localStorage.setItem("user", JSON.stringify(data.data));
-          navigate("/home");
-        }
-      })
-      .catch((err) => {
-        setLoad(false);
-        showError("Une erreur c'est produit");
-      });
-  };
-
-  const start_visitor = () => {
-    setLoad(true);
-    dispatch(visitor())
-      .unwrap()
-      .then(() => {
-        setLoad(false);
+        showSucces("Connexion reussie");
         navigate("/home");
       })
       .catch((err) => {
@@ -95,13 +69,13 @@ function Signin() {
 
   const onErrors = (errors) => console.error(errors);
 
-  // if (isLoggedIn) {
-  //   return <Navigate to="/" />;
-  // }
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <main className="bg-black h-screen relative">
-      {/* <Loading load={load} /> */}
+      <Loading load={load} />
       <ModalAlert
         open={showIsexist}
         setOpen={setShowIsExist}
@@ -127,30 +101,39 @@ function Signin() {
               ! 🚀✨
             </div>
           </div>
-          <div class="flex flex-col-reverse mt-5">
-            <input
-              placeholder="Nom d'utilisateur"
-              class="peer bg-gray-800 outline-none ring-1 px-4 py-1 h-12 border-0 rounded-lg ring-primary-200 duration-500 focus:ring-2 focus:border-primary-500 relative placeholder:duration-500 placeholder:absolute focus:placeholder:pt-10 text-xs shadow-xl shadow-base-400/10 focus:shadow-none focus:rounded-md focus:ring-primary-500 placeholder:text-base-500"
-            />
+          <form onSubmit={handleSubmit(onFormSubmit, onErrors)}>
+            <div class="flex flex-col-reverse mt-5">
+              <input
+                placeholder="Nom d'utilisateur"
+                value={username}
+                class="peer bg-gray-800 outline-none ring-1 px-4 py-1 h-12 border-0 rounded-lg ring-primary-200 duration-500 focus:ring-2 focus:border-primary-500 relative placeholder:duration-500 placeholder:absolute focus:placeholder:pt-10 text-xs shadow-xl shadow-base-400/10 focus:shadow-none focus:rounded-md focus:ring-primary-500 placeholder:text-base-500"
+                onChange={(e) => {
+                  setValue("username", e.target.value);
+                  setUsername(e.target.value);
+                }}
+              />
 
-            <span class="duration-500 opacity-0 mb-2 peer-focus:opacity-100 text-base-500 text-xs -translate-y-12 peer-focus:translate-y-0">
-              Nom d'utilisateur
-            </span>
-          </div>
+              <span class="duration-500 opacity-0 mb-2 peer-focus:opacity-100 text-base-500 text-xs -translate-y-12 peer-focus:translate-y-0">
+                Nom d'utilisateur
+              </span>
+            </div>
+            {errors.username && (
+              <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                {errors.username?.message}
+              </span>
+            )}
 
-          <div className="flex justify-center mt-5">
-            <motion.button
-              className={`bg-gray-800 p-3 text-primary-500 rounded-xl w-3/4`}
-              whileHover={{ scale: 1.1 }}
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                handleSwipe("right");
-              }}
-            >
-              Se connecter
-            </motion.button>
-          </div>
+            <div className="flex justify-center mt-5">
+              <motion.button
+                className={`bg-gray-800 p-3 text-primary-500 rounded-xl w-3/4`}
+                whileHover={{ scale: 1.1 }}
+                type="submit"
+                to="/"
+              >
+                Se connecter
+              </motion.button>
+            </div>
+          </form>
         </div>
       </div>
     </main>

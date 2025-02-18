@@ -7,6 +7,14 @@ const { v4: uuidv4 } = require("uuid");
 
 const router = express.Router();
 
+const authValidation = (req, res, next) => {
+  const schema = Joi.object({
+    username: Joi.string().required(),
+  });
+
+  validateRequest(req, next, schema);
+};
+
 router.post("/complete", async (req, res, next) => {
   const { categories } = req.body;
 
@@ -27,7 +35,7 @@ router.post("/complete", async (req, res, next) => {
   }
 });
 
-router.post("/signin", async (req, res, next) => {
+router.post("/signin", authValidation, async (req, res, next) => {
   try {
     const { username } = req.body;
     let user = null;

@@ -4,46 +4,26 @@ import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom"
-import { RiAddCircleFill, RiExchangeFill } from "react-icons/ri";
-import { BsClockHistory } from "react-icons/bs";
+import { Navigate } from "react-router-dom";
 import TinderCard from "../components/TinderCard";
 import { getMovies } from "../slices/movie";
-
-const AddButton = ({ openModal, setOpenModal }) => {
-  return (
-    <a
-      href="#"
-      onClick={(e) => {
-        e.stopPropagation();
-        setOpenModal(true);
-      }}
-      className="flex p-3 bg-primary-500 text-white rounded-full items-center space-x-2 my-2 mx-5"
-    >
-      <RiAddCircleFill className="text-xl" />
-      <span>Nouvelle session</span>
-    </a>
-  );
-};
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.auth);
-  const [active, setActive] = useState(1);
-
   const { movies } = useSelector((state) => state.movie);
-
-  const [datas, setDatas] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMovies());
-  }, []);
+    if (movies?.length == 0) {
+      dispatch(getMovies(currentUser?._id));
+    }
+  }, [movies?.length]);
 
-  // if (!localStorage.getItem("user")) {
-  //   return <Navigate to="/signin" />;
-  // }
+  if (!localStorage.getItem("user")) {
+    return <Navigate to="/signin" />;
+  }
 
   return (
     <div className="flex h-screen bg-black overflow-hidden">

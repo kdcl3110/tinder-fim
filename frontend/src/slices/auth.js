@@ -31,11 +31,10 @@ export const login = createAsyncThunk(
   async ({ username }, thunkAPI) => {
     try {
       const response = await AuthService.login(username);
-      if (!response.is_exist) {
-        thunkAPI.dispatch(replaceIsLoggedIn(true));
-        thunkAPI.dispatch(replaceCurrentUser(response.data));
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
+      thunkAPI.dispatch(replaceIsLoggedIn(true));
+      thunkAPI.dispatch(replaceCurrentUser(response.data));
+      localStorage.setItem("user", JSON.stringify(response.data));
+
       return response;
     } catch (error) {
       const message =

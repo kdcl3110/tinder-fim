@@ -8,6 +8,7 @@ import {
   replaceSocket,
 } from "./slices/auth";
 import { baseURL } from "./utils/baseUrl";
+import { getLike, getMovies } from "./slices/movie";
 
 const Init = ({ children }) => {
   const { currentUser, isLoggedIn, socket, language } = useSelector(
@@ -18,36 +19,37 @@ const Init = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const socket1 = io(baseURL, {
-    // reconnectionDelayMax: 10000,
-    reconnectionDelay: 1000,
-    reconnectionAttempts: 10,
-    autoConnect: false,
-  });
+  // const socket1 = io(baseURL, {
+  //   // reconnectionDelayMax: 10000,
+  //   reconnectionDelay: 1000,
+  //   reconnectionAttempts: 10,
+  //   autoConnect: false,
+  // });
 
   useEffect(() => {
-    // if (isLoggedIn) {
+    if (isLoggedIn) {
     //   try {
     //     socket1.connect();
     //     dispatch(replaceSocket(socket1));
     //   } catch (error) {
     //     console.log(error);
     //   }
-    // }
+    }
 
-    // if (localStorage.getItem("user")) {
-    //   if (!currentUser || JSON.stringify(currentUser) == "{}") {
-    //     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    //     dispatch(replaceCurrentUser(user));
-    //     dispatch(replaceIsLoggedIn(true));
-    //   }
-    // }
+    if (localStorage.getItem("user")) {
+      if (!currentUser || JSON.stringify(currentUser) == "{}") {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        dispatch(replaceCurrentUser(user));
+        dispatch(replaceIsLoggedIn(true));
+      }
+    }
   }, [isLoggedIn]);
 
   useEffect(() => {
-    // if (currentUser?._id) {
-    //   dispatch(getConfigs(currentUser?._id));
-    // }
+    if (currentUser?._id) {
+      dispatch(getMovies(currentUser?._id));
+      dispatch(getLike(currentUser?._id));
+    }
   }, [currentUser]);
 
   useEffect(() => {

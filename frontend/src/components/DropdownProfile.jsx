@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Transition from "../utils/Transition";
 
-import UserAvatar from "../images/user-avatar-32.png";
-import { login, logout } from "../slices/auth";
+import UserAvatar from "/images/logo.png";
+import { logout } from "../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 
 function DropdownProfile({ align }) {
@@ -68,11 +68,11 @@ function DropdownProfile({ align }) {
           alt="User"
         />
         <div className="flex items-center truncate">
-          <span className="truncate ml-2 text-sm font-medium group-hover:text-slate-800">
+          <span className="truncate ml-2 text-sm font-bold text-white group-hover:text-white">
             {`${currentUser?.username}`}
           </span>
           <svg
-            className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
+            className="w-3 h-3 shrink-0 ml-1 fill-current text-white"
             viewBox="0 0 12 12"
           >
             <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
@@ -81,7 +81,7 @@ function DropdownProfile({ align }) {
       </button>
 
       <Transition
-        className={`origin-top-right z-10 absolute top-full min-w-44 bg-white border border-slate-200 py-1.5 rounded shadow-lg overflow-hidden mt-1 ${
+        className={`origin-top-right z-30 absolute top-full min-w-44 bg-[#14141c] border border-slate-800 py-1.5 rounded shadow-lg overflow-hidden mt-1 ${
           align === "right" ? "right-0" : "left-0"
         }`}
         show={dropdownOpen}
@@ -97,8 +97,8 @@ function DropdownProfile({ align }) {
           onFocus={() => setDropdownOpen(true)}
           onBlur={() => setDropdownOpen(false)}
         >
-          <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
-            <div className="font-medium text-slate-800">{currentUser?.username}</div>
+          <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-800">
+            <div className="font-medium text-white">{currentUser?.username}</div>
           </div>
           <ul>
             <li>
