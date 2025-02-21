@@ -45,9 +45,24 @@ const getLike = async (userId) => {
   }
 };
 
+const getMatchedMovie = async (limit = 10) => {
+  try {
+    const response = await api.get(`movies/get-matches`, { params: { limit } });
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+
+    console.log("error-----------", message);
+    throw message;
+  }
+};
 
 export default {
   getMovies,
   swipe,
-  getLike
+  getLike,
+  getMatchedMovie,
 };

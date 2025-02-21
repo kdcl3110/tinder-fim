@@ -9,6 +9,7 @@ const schema = new mongoose.Schema(
       type: String,
       enum: ["like", "unlike"],
     },
+    group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }
   },
   { timestamps: true }
 );

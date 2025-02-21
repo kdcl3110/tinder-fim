@@ -8,7 +8,7 @@ import {
   replaceSocket,
 } from "./slices/auth";
 import { baseURL } from "./utils/baseUrl";
-import { getLike, getMovies } from "./slices/movie";
+import { getLike, getMatchedMovie, getMovies, replaceMatches } from "./slices/movie";
 
 const Init = ({ children }) => {
   const { currentUser, isLoggedIn, socket, language } = useSelector(
@@ -49,34 +49,29 @@ const Init = ({ children }) => {
     if (currentUser?._id) {
       dispatch(getMovies(currentUser?._id));
       dispatch(getLike(currentUser?._id));
+      dispatch(getMatchedMovie(10));
     }
   }, [currentUser]);
 
   useEffect(() => {
     if (socket) {
-      // socket?.on("connect", () => {
-      //   // showSucces(transation.connection_established);
-      //   dispatch(replaceOnline(true));
-      //   // localStorage.setItem("last_connect", new Date().toDateString());
-      // });
+      socket?.on("connect", () => {
+        dispatch(replaceOnline(true));
+      });
 
       // socket?.on("disconnect", () => {
       //   dispatch(replaceOnline(false));
       //   // showWarning("Connexion intérrompue");
       // });
 
-      // socket?.on("close", () => {
-      //   dispatch(replaceOnline(false));
-      // });
+      socket?.on("close", () => {
+        dispatch(replaceOnline(false));
+      });
 
-      // socket?.on("session:list", (data) => {
-      //   // console.log(data);
-
-      //   const waitingSession = data?.filter((e) => e?.status == "init");
-      //   const encoursSessin = data?.filter((e) => e?.status == "pending");
-
-      //   dispatch(replaceEncours([...encoursSessin]));
-      //   dispatch(replaceWainting([...waitingSession]));
+      // socket?.on("matches:list", (data) => {
+      //   if(data && data?.length > 0) {
+      //     dispatch(replaceMatches([...data]));
+      //   }
       // });
     }
     // currentUser

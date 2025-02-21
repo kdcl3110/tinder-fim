@@ -41,6 +41,19 @@ export const getLike = createAsyncThunk(
   }
 );
 
+export const getMatchedMovie = createAsyncThunk(
+  "movie/getMatchedMovie",
+  async (data, thunkAPI) => {
+    try {
+      const response = await movieService.getMatchedMovie(data);
+      thunkAPI.dispatch(replaceMatches(response));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 const gameSlice = createSlice({
   name: "movie",
   initialState,
@@ -57,9 +70,15 @@ const gameSlice = createSlice({
         likes: action.payload,
       };
     },
+    replaceMatches(state, action) {
+      return {
+        ...state,
+        matches: action.payload,
+      };
+    },
   },
 });
 const { reducer, actions } = gameSlice;
 
-export const { replaceMovie, replaceLike } = actions;
+export const { replaceMovie, replaceLike, replaceMatches } = actions;
 export default reducer;

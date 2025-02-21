@@ -3,8 +3,9 @@ const uniqueValidator = require("mongoose-unique-validator");
 
 const schema = new mongoose.Schema(
   {
-    username: { type: String, default: null, required: true},
-    categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }]
+    username: { type: String, default: null, required: true },
+    categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
+    group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" },
   },
   { timestamps: true }
 );

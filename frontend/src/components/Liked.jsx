@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 
 const LikeItem = ({ item }) => {
   return (
-    <div className="max-w-sm w-full h-36 lg:max-w-full lg:flex bg-black text-white shadow-sm shadow-stone-700">
+    <div className="w-full h-36 flex bg-black text-white shadow-sm shadow-stone-700">
       <motion.img
         className="h-36 lg:h-auto h-full flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
         src={item?.movie?.poster}

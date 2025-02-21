@@ -12,57 +12,10 @@ import { MdSecurity } from "react-icons/md";
 import { FaComments } from "react-icons/fa";
 import UserMenu from "../components/DropdownProfile";
 import LikeItem from "../components/Liked";
+import MatcheItem from "../components/MatcheItem";
+import Matching from "../pages/component/Matching";
+import Favorite from "../pages/component/Favorite";
 
-const Match = () => {
-  return (
-    <div className="flex flex-col items-center justify-center text-white text-center px-6">
-      {/* Carte avec ombre */}
-      <div className="relative">
-        <div className="w-24 h-36 bg-primary-500 rounded-xl bg-black opacity-40 shadow-xl"></div>
-      </div>
-
-      {/* Titre */}
-      <h1 className="text-2xl font-bold mt-6">Commencez à matcher.</h1>
-
-      {/* Description */}
-      <p className="text-gray-400 text-sm mt-4 max-w-md">
-        Vos matchs apparaîtront ici. Pour en obtenir, commencez à liker les
-        profils des autres utilisateurs. C'est aussi ici que vous pourrez
-        directement leur écrire, quand vous serez prêt(e) à vous lancer !
-      </p>
-    </div>
-  );
-};
-
-const Liked = () => {
-  const { likes } = useSelector((state) => state.movie);
-  return (
-    <div className="flex flex-col ">
-      {likes?.length == 0 ? (
-        <div className="flex flex-col items-center px-6 text-white text-center justify-center">
-          <div className="relative">
-            <FaComments className="text-primary-500 opacity-40 text-8xl" />
-          </div>
-          <h1 className="text-2xl font-bold mt-6">Dites bonjour</h1>
-          <p className="text-gray-400 text-sm mt-4 max-w-md">
-            Vous souhaitez engager la conversation ? Lorsque vous matchez avec
-            d'autres utilisateurs, vous pouvez leur envoyer un message sous
-            "Matchs".
-          </p>
-        </div>
-      ) : (
-        <div className="flex-1 min-h-0 space-y-5 overflow-auto">
-          {likes?.map((e) => (
-            <LikeItem key={e?._id} item={e} />
-          ))}
-          {likes?.map((e) => (
-            <LikeItem key={e?._id} item={e} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
@@ -144,8 +97,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 transform h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-96 2xl:!w-96 shrink-0  transition-all duration-200 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-64"
+        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 transform h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-96 lg:sidebar-expanded:!w-96 2xl:!w-96 shrink-0  transition-all duration-200 ease-in-out ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-96"
         }`}
       >
         {/* Sidebar header */}
@@ -211,32 +164,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             className="w-full flex flex-col items-center overflow-y-auto overflow-x-hidden p-1 md:p-2 "
             style={{ maxHeight: window.innerHeight - 140 }}
           >
-            {active == 1 && <Match />}
-            {active == 2 && <Liked />}
+            {active == 1 && <Matching />}
+            {active == 2 && <Favorite />}
           </div>
         </div>
-
-        {/* Links */}
-        {/* <div className="space-y-8 p-4"></div> */}
-
-        {/* Expand / collapse button */}
-        {/* <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto p-4">
-          <div className="px-3 py-2">
-            <button onClick={() => setSidebarExpanded(!sidebarExpanded)}>
-              <span className="sr-only">Expand / collapse sidebar</span>
-              <svg
-                className="w-6 h-6 fill-current sidebar-expanded:rotate-180"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  className="text-slate-400"
-                  d="M19.586 11l-5-5L16 4.586 23.414 12 16 19.414 14.586 18l5-5H7v-2z"
-                />
-                <path className="text-slate-600" d="M3 23H1V1h2z" />
-              </svg>
-            </button>
-          </div>
-        </div> */}
       </div>
     </div>
   );

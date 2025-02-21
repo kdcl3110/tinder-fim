@@ -3,7 +3,7 @@ import { FaTimes, FaHeart } from "react-icons/fa";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import format_date from "../utils/format_date";
 import { useDispatch, useSelector } from "react-redux";
-import { replaceMovie, swipe } from "../slices/movie";
+import { getLike, getMatchedMovie, replaceMovie, swipe } from "../slices/movie";
 import { showError } from "./Toasts";
 
 const TinderCard = ({ item, movies = [] }) => {
@@ -34,11 +34,13 @@ const TinderCard = ({ item, movies = [] }) => {
         .unwrap()
         .then((res) => {
           dispatch(replaceMovie(movies.filter((e) => e?._id != item?._id)));
+          dispatch(getMatchedMovie());
+          dispatch(getLike(currentUser?._id));
         })
         .catch((err) => {
           showError("Un problème est survenu");
         });
-        
+
       // dispatch(replaceMovie(movies.filter((e) => e?._id !== item?._id)));
     }, 300);
   };
@@ -60,6 +62,8 @@ const TinderCard = ({ item, movies = [] }) => {
         .unwrap()
         .then((res) => {
           dispatch(replaceMovie(movies.filter((e) => e?._id != item?._id)));
+          dispatch(getMatchedMovie());
+          dispatch(getLike(currentUser?._id));
         })
         .catch((err) => {
           showError("Un problème est survenu");
@@ -69,7 +73,7 @@ const TinderCard = ({ item, movies = [] }) => {
 
   return (
     <motion.div
-      className="relative grid h-[90vh] md:h-[45rem] max-w-lg flex-col items-end justify-center overflow-hidden rounded-lg bg-black hover:cursor-grab active:cursor-grabbing shadow-md shadow-slate-900"
+      className="relative grid h-[87vh] max-w-lg flex-col items-end justify-center overflow-hidden rounded-lg bg-black hover:cursor-grab active:cursor-grabbing shadow-md shadow-slate-900"
       style={{
         gridRow: 1,
         gridColumn: 1,
@@ -106,8 +110,11 @@ const TinderCard = ({ item, movies = [] }) => {
           <p className="text-white text-sm">{item?.overview}</p>
         </div>
         <div className="px-6 pt-4 pb-2">
-          {item?.categories?.map((e) => (
-            <span className="inline-block border-2 border-white text-white rounded-full px-3 py-1 text-sm font-semibold  mr-2 mb-2">
+          {item?.categories?.map((e, i) => (
+            <span
+              key={i}
+              className="inline-block border-2 border-white text-white rounded-full px-3 py-1 text-sm font-semibold  mr-2 mb-2"
+            >
               {e?.name}
             </span>
           ))}

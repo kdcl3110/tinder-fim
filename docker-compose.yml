@@ -1,21 +1,9 @@
 version: "3.8"
 
 services:
-  admin:
-    build: ./admin
-    restart: always
-    networks:
-      - 3icp
-    ports:
-      - "5000:5000"
-    depends_on:
-      - mongo_icp
-    environment:
-      - FLASK_ENV=development
-      - MONGO_URI=mongodb://mongo_icp:27017/3icp
 
   backend:
-    build: ./web
+    build: ./backend
     restart: always
     networks:
       - 3icp
@@ -23,7 +11,7 @@ services:
       - "4000:4000"
 
   fontend:
-    build: ./front
+    build: ./frontend
     restart: always
     networks:
       - 3icp
