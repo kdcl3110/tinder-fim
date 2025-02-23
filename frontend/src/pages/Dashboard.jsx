@@ -52,7 +52,7 @@ function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-black overflow-hidden">
+    <div className="flex h-[100dvh] bg-black overflow-hidden">
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
@@ -61,7 +61,7 @@ function Dashboard() {
         {/*  Site header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-        <main className="relative h-[87vh]">
+        <main className="relative h-[87dvh]">
           <div
             className="grid lg:min-h-screen md:overflow-hidden place-items-center"
             // style={{ height: window.innerHeight - 100 }}
@@ -71,7 +71,7 @@ function Dashboard() {
                 <TinderCard key={e?._id} item={e} movies={movies} />
               ))}
             {tabActive > 1 && (
-              <div className="h-[87vh] overflow-y-auto">
+              <div className="h-[87dvh] overflow-y-auto">
                 {tabActive == 2 && <Matching />}
                 {tabActive == 3 && <Favorite />}
               </div>

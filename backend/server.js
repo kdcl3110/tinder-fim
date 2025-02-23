@@ -1,5 +1,5 @@
 const http = require("http");
-// const http = require("http");
+// const http = require("https");
 require("dotenv").config();
 const app = require("./src/app");
 const Socket = require("socket.io");
@@ -50,7 +50,7 @@ server.on("listening", () => {
   console.log("Listening on " + bind);
 });
 
-server.listen(port);
+server.listen(port, '0.0.0.0');
 
 const io = Socket(server, {
   pingTimeout: 60000,

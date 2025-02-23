@@ -111,6 +111,7 @@ function Signin() {
                   setValue("username", e.target.value);
                   setUsername(e.target.value);
                 }}
+                autoCapitalize="off"
               />
 
               <span class="duration-500 opacity-0 mb-2 peer-focus:opacity-100 text-base-500 text-xs -translate-y-12 peer-focus:translate-y-0">

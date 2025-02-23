@@ -16,7 +16,9 @@ const swipeValidation = (req, res, next) => {
 
 router.get("/like/:id", async (req, res, next) => {
   try {
-    const response = await service.getLike(req.params.id);
+    const limit = req.query?.limit;
+    const response = await service.getLike(req.params.id, limit);
+
     return res.json(response);
   } catch (error) {
     console.log(error);
@@ -26,23 +28,34 @@ router.get("/like/:id", async (req, res, next) => {
 
 router.post("/swipe", swipeValidation, async (req, res, next) => {
   try {
-    const io = req.get("io");
+    const io = req.app.get("io");
 
     const response = await service.swipe(
       req.body.user,
       req.body.movie,
-      req.body.choice,
-      io
+      req.body.choice
     );
+
+    service.getMatchedMovie(10).then((data) => {
+      console.log("matches:list");
+      io.sockets.emit(`matches:list`, data);
+    });
+
+    service.getLike(req.body.user).then((data) => {
+      console.log(`movie:liked:${req.body.user}`);
+      io.sockets.emit(`movie:liked:${req.body.user}`, data);
+    });
+
     return res.json(response);
   } catch (error) {
-    console.log(error);
+    console.log("swipe-------------", error);
     return res.status(400).json({ message: error?.message || error });
   }
 });
 
 router.get("/get-matches/", async (req, res, next) => {
   try {
+    const io = req.app.get("io");
     const response = await service.getMatchedMovie();
     return res.json(response);
   } catch (error) {

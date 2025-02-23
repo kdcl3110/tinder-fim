@@ -8,7 +8,13 @@ import {
   replaceSocket,
 } from "./slices/auth";
 import { baseURL } from "./utils/baseUrl";
-import { getLike, getMatchedMovie, getMovies, replaceMatches } from "./slices/movie";
+import {
+  getLike,
+  getMatchedMovie,
+  getMovies,
+  replaceLike,
+  replaceMatches,
+} from "./slices/movie";
 
 const Init = ({ children }) => {
   const { currentUser, isLoggedIn, socket, language } = useSelector(
@@ -19,21 +25,21 @@ const Init = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const socket1 = io(baseURL, {
-  //   // reconnectionDelayMax: 10000,
-  //   reconnectionDelay: 1000,
-  //   reconnectionAttempts: 10,
-  //   autoConnect: false,
-  // });
+  const socket1 = io(baseURL, {
+    // reconnectionDelayMax: 10000,
+    reconnectionDelay: 1000,
+    reconnectionAttempts: 10,
+    autoConnect: false,
+  });
 
   useEffect(() => {
     if (isLoggedIn) {
-    //   try {
-    //     socket1.connect();
-    //     dispatch(replaceSocket(socket1));
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
+      try {
+        socket1.connect();
+        dispatch(replaceSocket(socket1));
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     if (localStorage.getItem("user")) {
@@ -56,7 +62,7 @@ const Init = ({ children }) => {
   useEffect(() => {
     if (socket) {
       socket?.on("connect", () => {
-        dispatch(replaceOnline(true));
+        // dispatch(replaceOnline(true));
       });
 
       // socket?.on("disconnect", () => {
@@ -64,18 +70,28 @@ const Init = ({ children }) => {
       //   // showWarning("Connexion intérrompue");
       // });
 
-      socket?.on("close", () => {
-        dispatch(replaceOnline(false));
+      socket?.on("matches:list", (data) => {
+        console.log("matches:list-------------", data);
+        if (data && data?.length > 0) {
+          dispatch(replaceMatches([...data]));
+        }
       });
 
-      // socket?.on("matches:list", (data) => {
-      //   if(data && data?.length > 0) {
-      //     dispatch(replaceMatches([...data]));
-      //   }
-      // });
+      if (
+        JSON.stringify(currentUser) != "{}" &&
+        JSON.stringify(currentUser) != ""
+      ) {
+        socket?.on(`movie:liked:${currentUser?._id}`, (data) => {
+          console.log("-------------", data);
+          
+          if (data && data?.length > 0) {
+            dispatch(replaceLike([...data]));
+          }
+        });
+      }
     }
     // currentUser
-  }, [socket]);
+  }, [socket, currentUser]);
 
   return <React.Fragment>{children}</React.Fragment>;
 };

@@ -33,21 +33,21 @@ const swipe = async (userId, movieId, choice) => {
 
       return swipe;
     }
-
     throw "Incorrect datas";
   } catch (error) {
     throw error?.message;
   }
 };
 
-const getLike = async (userId) => {
+const getLike = async (userId, limit = 20) => {
   try {
     const likedMovies = await Swipe.find({
       user: userId,
       choice: "like",
     })
       .populate("movie")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .limit(limit);
 
     return likedMovies;
   } catch (error) {
@@ -59,42 +59,42 @@ const getMatchedMovie = async (limit = 10) => {
   try {
     const topMovies = await Swipe.aggregate([
       {
-        $match: { choice: "like" } // Ne prendre en compte que les "likes"
+        $match: { choice: "like" }, // Ne prendre en compte que les "likes"
       },
       {
         $group: {
           _id: "$movie", // Grouper par film
           likes_count: { $sum: 1 }, // Compter le nombre de likes
-          users: { $push: "$user" } // Stocker les utilisateurs qui ont liké
-        }
+          users: { $push: "$user" }, // Stocker les utilisateurs qui ont liké
+        },
       },
       {
-        $match: { likes_count: { $gte: 2 } } // Ne garder que les films avec au moins 2 likes
+        $match: { likes_count: { $gte: 2 } }, // Ne garder que les films avec au moins 2 likes
       },
       {
-        $sort: { likes_count: -1 } // Trier par nombre de likes décroissant
+        $sort: { likes_count: -1 }, // Trier par nombre de likes décroissant
       },
       {
-        $limit: limit // Limiter aux N films les plus likés
+        $limit: limit, // Limiter aux N films les plus likés
       },
       {
         $lookup: {
           from: "movies", // Rejoindre avec la collection Movie
           localField: "_id",
           foreignField: "_id",
-          as: "movieData"
-        }
+          as: "movieData",
+        },
       },
       {
-        $unwind: "$movieData" // Transformer l'array en objet
+        $unwind: "$movieData", // Transformer l'array en objet
       },
       {
         $lookup: {
           from: "users", // Associer avec la collection User
           localField: "users",
           foreignField: "_id",
-          as: "userData"
-        }
+          as: "userData",
+        },
       },
       {
         $project: {
@@ -103,20 +103,17 @@ const getMatchedMovie = async (limit = 10) => {
           title: "$movieData.title",
           poster: "$movieData.poster",
           likes_count: 1,
-          users: "$userData.username" // Récupérer uniquement les noms d'utilisateur
-        }
-      }
+          users: "$userData.username", // Récupérer uniquement les noms d'utilisateur
+        },
+      },
     ]);
 
     return topMovies;
   } catch (error) {
     console.log(error);
-    
+
     throw error?.message;
   }
 };
-
-
-
 
 module.exports = { getMovies, swipe, getLike, getMatchedMovie };

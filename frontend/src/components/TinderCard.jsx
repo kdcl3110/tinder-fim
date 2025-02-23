@@ -34,8 +34,7 @@ const TinderCard = ({ item, movies = [] }) => {
         .unwrap()
         .then((res) => {
           dispatch(replaceMovie(movies.filter((e) => e?._id != item?._id)));
-          dispatch(getMatchedMovie());
-          dispatch(getLike(currentUser?._id));
+          // dispatch(getLike(currentUser?._id));
         })
         .catch((err) => {
           showError("Un problème est survenu");
@@ -46,7 +45,7 @@ const TinderCard = ({ item, movies = [] }) => {
   };
 
   const handleDragEnd = () => {
-    if (Math.abs(x.get()) > 100) {
+    if (Math.abs(x.get()) > 70) {
       const data = {
         user: currentUser?._id,
         movie: item?._id,
@@ -57,13 +56,15 @@ const TinderCard = ({ item, movies = [] }) => {
       } else {
         data.choice = "like";
       }
+      setExitX(data.choice == "unlike" ? -500 : 500);
 
       dispatch(swipe(data))
         .unwrap()
         .then((res) => {
-          dispatch(replaceMovie(movies.filter((e) => e?._id != item?._id)));
-          dispatch(getMatchedMovie());
-          dispatch(getLike(currentUser?._id));
+          setTimeout(() => {
+            dispatch(replaceMovie(movies.filter((e) => e?._id != item?._id)));
+          }, 300);
+          // dispatch(getLike(currentUser?._id));
         })
         .catch((err) => {
           showError("Un problème est survenu");
@@ -73,7 +74,7 @@ const TinderCard = ({ item, movies = [] }) => {
 
   return (
     <motion.div
-      className="relative grid h-[87vh] max-w-lg flex-col items-end justify-center overflow-hidden rounded-lg bg-black hover:cursor-grab active:cursor-grabbing shadow-md shadow-slate-900"
+      className="relative grid h-[87dvh] max-w-lg flex-col items-end justify-center overflow-hidden rounded-lg bg-black hover:cursor-grab active:cursor-grabbing shadow-md shadow-slate-900"
       style={{
         gridRow: 1,
         gridColumn: 1,

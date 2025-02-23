@@ -21,7 +21,7 @@ const Favorite = () => {
             </p>
           </div>
         ) : (
-          <div className="flex-1 space-y-5">
+          <div className="flex-1 space-y-5 w-full">
             {likes?.map((e) => (
               <LikeItem key={e?._id} item={e} />
             ))}

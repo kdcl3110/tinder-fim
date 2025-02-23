@@ -5,7 +5,7 @@ import MatcheItem from "../../components/MatcheItem";
 const Matching = () => {
     const { matches } = useSelector((state) => state.movie);
     return (
-      <div className="flex flex-col mt-5">
+      <div className="flex flex-col">
         {matches?.length == 0 ? (
           <div className="flex flex-col items-center justify-center text-white text-center px-6">
             {/* Carte avec ombre */}
@@ -24,7 +24,7 @@ const Matching = () => {
             </p>
           </div>
         ) : (
-          <div className="flex-1 space-y-5">
+          <div className="flex-1 space-y-5 w-full">
             {matches?.map((e, i) => (
               <MatcheItem key={e?._id} item={e} index = {i}/>
             ))}
