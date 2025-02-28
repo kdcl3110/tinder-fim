@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaTimes, FaHeart } from "react-icons/fa";
+import { BsEmojiNeutral } from "react-icons/bs";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import format_date from "../utils/format_date";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,18 +16,23 @@ const TinderCard = ({ item, movies = [] }) => {
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
 
   const [exitX, setExitX] = useState(0);
+  const [exitY, setExitY] = useState(0);
 
   const handleSwipe = (direction) => {
-    setExitX(direction === "left" ? -500 : 500); // Définit la direction du mouvement
     const data = {
       user: currentUser?._id,
       movie: item?._id,
       choice: "",
     };
     if (direction === "left") {
+      setExitX(-500);
       data.choice = "unlike";
-    } else {
+    } else if (direction === "right") {
+      setExitX(500);
       data.choice = "like";
+    } else {
+      setExitY(-1000);
+      data.choice = "dont_care";
     }
 
     setTimeout(() => {
@@ -45,7 +51,7 @@ const TinderCard = ({ item, movies = [] }) => {
   };
 
   const handleDragEnd = () => {
-    if (Math.abs(x.get()) > 70) {
+    if (Math.abs(x.get()) > 50) {
       const data = {
         user: currentUser?._id,
         movie: item?._id,
@@ -83,8 +89,8 @@ const TinderCard = ({ item, movies = [] }) => {
         rotate,
       }}
       initial={{ x: 0 }}
-      animate={{ x: exitX }}
-      exit={{ x: exitX, opacity: 0 }} // Disparition en fondu
+      animate={{ x: exitX, y: exitY }}
+      exit={{ x: exitX, opacity: 0, y: exitY }} // Disparition en fondu
       transition={{ duration: 0.3, ease: "easeInOut" }} // Durée et fluidité de l'animation
       drag="x"
       dragConstraints={{
@@ -138,6 +144,18 @@ const TinderCard = ({ item, movies = [] }) => {
             }}
           >
             <FaTimes className="text-3xl" />
+          </motion.button>
+
+          <motion.button
+            className={`bg-gray-800 p-3 rounded-full text-blue-500`}
+            whileHover={{ scale: 1.3 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleSwipe("top");
+            }}
+          >
+            <BsEmojiNeutral className="text-3xl" />
           </motion.button>
 
           <motion.button

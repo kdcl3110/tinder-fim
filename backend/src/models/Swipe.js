@@ -7,7 +7,7 @@ const schema = new mongoose.Schema(
     movie: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie' },
     choice: {
       type: String,
-      enum: ["like", "unlike"],
+      enum: ["like", "unlike", "dont_care"],
     },
     group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }
   },

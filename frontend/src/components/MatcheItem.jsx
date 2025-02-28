@@ -10,15 +10,15 @@ const MatcheItem = ({ item, index }) => {
     >
       <motion.img
         className="h-36 lg:h-auto h-full flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-        src={item?.poster}
+        src={item?.movie?.poster}
         title="Woman holding a mug"
         whileHover={{ scale: 1.1 }}
       />
       <div className="rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
         <div className="mb-8">
-          <div className=" font-bold mb-2">{item?.title}</div>
+          <div className=" font-bold mb-2">{item?.movie?.title}</div>
           <p className="text-xs">
-            Nombre de matches : <span className="text-xl font-bold">{item?.likes_count}</span> 
+            Score : <span className="text-xl font-bold">{item?.score}</span> 
           </p>
         </div>
       </div>

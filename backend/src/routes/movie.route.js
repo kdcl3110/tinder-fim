@@ -8,7 +8,7 @@ const swipeValidation = (req, res, next) => {
   const schema = Joi.object({
     user: Joi.string().required(),
     movie: Joi.string().required(),
-    choice: Joi.string().valid("like", "unlike").required(),
+    choice: Joi.string().valid("like", "unlike", "dont_care").required(),
   });
 
   validateRequest(req, next, schema);
