@@ -1,0 +1,20 @@
+{
+  "name": "Flix Tinder",
+  "short_name": "FlixTinder",
+  "icons": [
+    {
+      "src": "https://koratgames.com/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://koratgames.com/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "https://koratgames.com/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}

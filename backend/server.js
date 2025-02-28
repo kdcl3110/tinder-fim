@@ -4,7 +4,6 @@ require("dotenv").config();
 const app = require("./src/app");
 const Socket = require("socket.io");
 const fs = require("fs");
-const { getMatchedMovie } = require("./src/services/movie.service");
 
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
@@ -65,10 +64,6 @@ app.set("io", io);
 
 io.on("connection", async (socket) => {
   console.log("socket");
-  socket.on("dice:launch", async (data) => {
-    io.sockets.emit(`dice:launch:${data._id}`);
-  });
-
   socket.on("disconnect", async () => {
     console.log("déconnexion");
   });

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import AuthService from "../services/auth.service";
 import initialState from "../initialStore/auth";
-import { replaceConfigs } from "./config";
+import { replaceLike, replaceMatches, replaceMovie } from "./movie";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -76,7 +76,9 @@ export const logout = createAsyncThunk(
       const responser = AuthService.logout();
       thunkAPI.dispatch(replaceIsLoggedIn(false));
       thunkAPI.dispatch(replaceCurrentUser(null));
-      thunkAPI.dispatch(replaceConfigs({}));
+      thunkAPI.dispatch(replaceLike([]));
+      thunkAPI.dispatch(replaceMovie([]));
+      thunkAPI.dispatch(replaceMatches([]));
       return responser;
     } catch (error) {
       const message =
