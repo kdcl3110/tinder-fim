@@ -26,7 +26,7 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-const dbUrl = "mongodb://localhost:27017/tinder_film";
+const dbUrl = "mongodb://mongo_flix_tinder:27017/tinder_film";
 
 mongoose
   .connect(process.env.DB_URL || dbUrl, {

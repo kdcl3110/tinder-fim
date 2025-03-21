@@ -74,7 +74,7 @@ function Signin() {
   }
 
   return (
-    <main className="bg-black h-screen relative">
+    <main className="bg-black h-[100dvh] relative">
       <Loading load={load} />
       <ModalAlert
         open={showIsexist}
@@ -90,7 +90,7 @@ function Signin() {
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/90 via-black/50" />
       </div>
 
-      <div className="relative grid min-h-screen overflow-y-auto place-items-center">
+      <div className="relative grid min-h-[100dvh] overflow-y-auto place-items-center">
         <div className="h-[35rem] w-full sm:w-[500px] bg-[#14141c] rounded-lg pt-10 px-5 text-white">
           <div className="flex flex-col items-center w-full space-y-5 justify-center">
             <img src={Logo} alt="logo" className="h-12" />

@@ -5,7 +5,7 @@ import MatcheItem from "../../components/MatcheItem";
 const Matching = () => {
     const { matches } = useSelector((state) => state.movie);
     return (
-      <div className="flex flex-col">
+      <div className="w-full flex flex-col">
         {matches?.length == 0 ? (
           <div className="flex flex-col items-center justify-center text-white text-center px-6">
             {/* Carte avec ombre */}
@@ -18,9 +18,9 @@ const Matching = () => {
   
             {/* Description */}
             <p className="text-gray-400 text-sm mt-4 max-w-md">
-              Vos matchs apparaîtront ici. Pour en obtenir, commencez à liker les
-              profils des autres utilisateurs. C'est aussi ici que vous pourrez
-              directement leur écrire, quand vous serez prêt(e) à vous lancer !
+              Les matchs apparaîtront ici. Pour en obtenir, commencez à liker les
+              Films disponible. C'est aussi ici que vous pourrez
+              voir les films les plus appréçés de l'application !
             </p>
           </div>
         ) : (

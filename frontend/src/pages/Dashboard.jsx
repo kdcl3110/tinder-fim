@@ -71,7 +71,7 @@ function Dashboard() {
                 <TinderCard key={e?._id} item={e} movies={movies} />
               ))}
             {tabActive > 1 && (
-              <div className="h-[87dvh] overflow-y-auto">
+              <div className="h-[87dvh] w-full overflow-y-auto">
                 {tabActive == 2 && <Matching />}
                 {tabActive == 3 && <Favorite />}
               </div>

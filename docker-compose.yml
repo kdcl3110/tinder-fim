@@ -1,4 +1,4 @@
-version: "3.8"
+# version: "3.8"
 
 services:
 
@@ -8,7 +8,7 @@ services:
     networks:
       - FlixTinder
     ports:
-      - "5000:4000"
+      - "7300:4000"
 
   fontend:
     build: ./frontend
@@ -16,7 +16,7 @@ services:
     networks:
       - FlixTinder
     ports:
-      - "8082:80"
+      - "7200:80"
 
   mongo_flix_tinder:
     image: mongo
@@ -24,7 +24,7 @@ services:
     networks:
       - FlixTinder
     ports:
-      - 27018:27017
+      - 27019:27017
     volumes:
       - mongo-data:/data/db
 

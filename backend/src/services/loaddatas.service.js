@@ -22,7 +22,7 @@ const loadCategory = async () => {
 
 const loadMovies = async () => {
   try {
-    // 1000 premiers films
+    // 10000 premiers films
     for (let i = 1; i <= 500; i++) {
       const { data } = await api.get(`movie/popular?language=fr-FR&page=${i}`);
       for (const result of data?.results) {
@@ -41,7 +41,7 @@ const loadMovies = async () => {
             vote_average: result?.vote_average,
             vote_count: result?.vote_count,
             popularity: result?.popularity,
-            overview: result?.overview,
+            overview: result?.overview || "Pas de description disponible pour le moment",
             categories: categories,
           };
 

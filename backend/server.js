@@ -41,7 +41,7 @@ const errorHandler = (error) => {
   }
 };
 
-const server = http.createServer(app, "10.2.101.12");
+const server = http.createServer(app);
 server.on("error", errorHandler);
 server.on("listening", () => {
   const address = server.address();
