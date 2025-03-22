@@ -10,7 +10,7 @@ services:
     ports:
       - "7300:4000"
 
-  fontend:
+  frontend:
     build: ./frontend
     restart: always
     networks:

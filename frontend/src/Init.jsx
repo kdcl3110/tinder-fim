@@ -25,8 +25,7 @@ const Init = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const socket1 = io(baseURL, {
-    // reconnectionDelayMax: 10000,
+  const socket1 = io("", {
     reconnectionDelay: 1000,
     reconnectionAttempts: 10,
     autoConnect: false,

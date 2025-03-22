@@ -2,7 +2,7 @@ import api from "./api";
 
 const getMovies = async (user) => {
   try {
-    const response = await api.get(`movies/${user}`);
+    const response = await api.get(`/movies/${user}`);
     return response.data;
   } catch (error) {
     const message =
@@ -17,7 +17,7 @@ const getMovies = async (user) => {
 
 const swipe = async (data) => {
   try {
-    const response = await api.post(`movies/swipe`, data);
+    const response = await api.post(`/movies/swipe`, data);
     return response.data;
   } catch (error) {
     const message =
@@ -32,7 +32,7 @@ const swipe = async (data) => {
 
 const getLike = async (userId) => {
   try {
-    const response = await api.get(`movies/like/${userId}`);
+    const response = await api.get(`/movies/like/${userId}`);
     return response.data;
   } catch (error) {
     const message =
@@ -47,7 +47,7 @@ const getLike = async (userId) => {
 
 const getMatchedMovie = async (limit = 10) => {
   try {
-    const response = await api.get(`movies/get-matches`, { params: { limit } });
+    const response = await api.get(`/movies/get-matches`, { params: { limit } });
     return response.data;
   } catch (error) {
     const message =

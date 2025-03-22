@@ -1,7 +1,7 @@
 import api from "./api";
 
 const login = async (username) => {
-  return api.post("auth/signin", { username }).then((response) => {
+  return api.post("/auth/signin", { username }).then((response) => {
     return response.data;
   });
 };
