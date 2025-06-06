@@ -23,21 +23,25 @@ const swipe = async (userId, movieId, choice) => {
     const movie = await Movie.findById(movieId);
 
     if (user && movie) {
-      const verif = await Swipe.findOne({ user: user._id, movie: movie._id });
-      if (verif) throw "Unauthorized";
-
-      const swipe = await Swipe.create({
-        user: user._id,
-        movie: movie._id,
-        choice,
-      });
+      let swipe = await Swipe.findOne({ user: user._id, movie: movie._id });
+      if (swipe) {
+        swipe.choice = choice;
+        await swipe.save();
+      } else {
+        swipe = await Swipe.create({
+          user: user._id,
+          movie: movie._id,
+          choice,
+        });
+      }
 
       await getScore(movie._id, choice);
-
       return swipe;
     }
     throw "Incorrect datas";
   } catch (error) {
+    console.log(error);
+
     throw error?.message;
   }
 };
@@ -139,7 +143,9 @@ const getMatchedMovie = async (limit = 10) => {
 const getScore = async (movieId, choice) => {
   try {
     const movie = await Movie.findById(movieId);
-
+    
+    if (!movie) throw error;
+    
     let movieScore = await MovieScore.findOne({ movie: movieId });
 
     if (!movieScore) {
@@ -147,7 +153,6 @@ const getScore = async (movieId, choice) => {
         movie: movie._id,
       });
     }
-    if (!movie) throw error;
 
     if (choice == "like") movieScore.score += 10;
     else if (choice == "unlike") movieScore.score -= 10;
